@@ -21,7 +21,7 @@ public class DeleteCommentController {
 	private final DeleteCommentService deleteCommentService;
 
 	@DeleteMapping("/{commentId}")
-	public ApiResponse<ApiResponseBody.SuccessBody<Void>> delete(
+	public ApiResponse<ApiResponseBody.SuccessBody<Void>> deleteComment(
 			@PathVariable Long commentId, @Login Long userId) {
 		deleteCommentService.execute(commentId, userId);
 		return ApiResponseGenerator.success(HttpStatus.OK, MessageCode.DELETE);

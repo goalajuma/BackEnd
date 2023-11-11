@@ -1,6 +1,6 @@
 package com.kakao.golajuma.auth.domain.token;
 
-import com.kakao.golajuma.auth.domain.exception.AuthorizationException;
+import com.kakao.golajuma.auth.domain.exception.TokenExpiredException;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,10 +11,12 @@ public class TokenValidator {
 	private final TokenResolver tokenResolver;
 
 	public void valid(String token) {
-		Date expiredDate = tokenResolver.getExpiredDate(token);
+		Long expired = tokenResolver.getExpiredDate(token);
+		Date expiredDate = new Date(expired);
 
-		if (expiredDate.before(new Date())) {
-			throw new AuthorizationException("토큰이 만료되었습니다");
+		Date now = new Date();
+		if (expiredDate.before(now)) {
+			throw new TokenExpiredException();
 		}
 	}
 }

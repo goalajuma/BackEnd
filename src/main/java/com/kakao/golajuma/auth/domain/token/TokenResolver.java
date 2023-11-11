@@ -1,6 +1,6 @@
 package com.kakao.golajuma.auth.domain.token;
 
-import com.kakao.golajuma.auth.domain.exception.NotValidToken;
+import com.kakao.golajuma.auth.domain.exception.TokenExpiredException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -9,10 +9,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Objects;
 import javax.crypto.SecretKey;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class TokenResolver {
 
 	private static final String USER_ID_CLAIM_KEY = "userId";
@@ -26,13 +28,15 @@ public class TokenResolver {
 		try {
 			return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
 		} catch (ExpiredJwtException e) {
-			throw new NotValidToken("만료된 토큰입니다");
+			throw new TokenExpiredException();
 		}
 	}
 
-	public Date getExpiredDate(final String token) {
+	public Long getExpiredDate(final String token) {
 		Objects.requireNonNull(token);
-		return getClaims(token).getExpiration();
+		Date expiration = getClaims(token).getExpiration();
+
+		return expiration.getTime();
 	}
 
 	public Long getUserInfo(final String token) {

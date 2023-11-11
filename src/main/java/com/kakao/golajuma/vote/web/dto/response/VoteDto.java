@@ -1,9 +1,9 @@
 package com.kakao.golajuma.vote.web.dto.response;
 
-import com.kakao.golajuma.auth.infra.entity.UserEntity;
+import com.kakao.golajuma.auth.persistence.entity.UserEntity;
 import com.kakao.golajuma.common.marker.AbstractResponseDto;
-import com.kakao.golajuma.vote.infra.entity.Active;
-import com.kakao.golajuma.vote.infra.entity.VoteEntity;
+import com.kakao.golajuma.vote.persistence.entity.Active;
+import com.kakao.golajuma.vote.persistence.entity.VoteEntity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class VoteDto implements AbstractResponseDto {
 		this.content = vote.getVoteContent();
 	}
 
-	public static VoteDto makeDto(
+	public static VoteDto convert(
 			VoteEntity vote,
 			UserEntity username,
 			Active active,
