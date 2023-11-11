@@ -1,6 +1,6 @@
 package com.kakao.golajuma.vote.web.dto.converter;
 
-import com.kakao.golajuma.vote.infra.entity.OptionEntity;
+import com.kakao.golajuma.vote.persistence.entity.OptionEntity;
 import com.kakao.golajuma.vote.web.dto.response.DecisionResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +13,15 @@ public class DecisionResponseConverter {
 
 	public DecisionResponse from(Long selectedId, List<OptionEntity> optionsByVote, int totalCount) {
 		return DecisionResponse.builder()
-				.choice(selectedId)
+				.result(optionResultConverter.from(selectedId, optionsByVote, totalCount))
+				.total(totalCount)
+				.build();
+	}
+
+	public DecisionResponse from(List<OptionEntity> optionsByVote, int totalCount) {
+		return DecisionResponse.builder()
 				.result(optionResultConverter.from(optionsByVote, totalCount))
+				.total(totalCount)
 				.build();
 	}
 }

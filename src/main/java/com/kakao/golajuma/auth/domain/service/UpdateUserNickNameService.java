@@ -1,8 +1,8 @@
 package com.kakao.golajuma.auth.domain.service;
 
-import com.kakao.golajuma.auth.domain.exception.NotFoundException;
-import com.kakao.golajuma.auth.infra.entity.UserEntity;
-import com.kakao.golajuma.auth.infra.repository.UserRepository;
+import com.kakao.golajuma.auth.domain.exception.NotFoundUserException;
+import com.kakao.golajuma.auth.persistence.entity.UserEntity;
+import com.kakao.golajuma.auth.persistence.repository.UserRepository;
 import com.kakao.golajuma.auth.web.dto.request.UpdateUserNickNameRequest;
 import com.kakao.golajuma.auth.web.dto.response.UpdateNickNameResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +16,11 @@ public class UpdateUserNickNameService {
 
 	private final UserRepository userRepository;
 
+	private final ValidNicknameService validNicknameService;
+
 	public UpdateNickNameResponse execute(UpdateUserNickNameRequest requestDto, Long userId) {
-		UserEntity userEntity =
-				userRepository.findById(userId).orElseThrow(() -> new NotFoundException("존재하지 않은 유저입니다."));
+		validNicknameService.execute(requestDto);
+		UserEntity userEntity = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
 		String newNickName = requestDto.getNickname();
 		userEntity.updateNickName(newNickName);
 		return new UpdateNickNameResponse(newNickName);

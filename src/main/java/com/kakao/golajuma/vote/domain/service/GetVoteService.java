@@ -1,12 +1,12 @@
 package com.kakao.golajuma.vote.domain.service;
 
-import com.kakao.golajuma.auth.infra.entity.UserEntity;
-import com.kakao.golajuma.auth.infra.repository.UserRepository;
-import com.kakao.golajuma.vote.infra.entity.Active;
-import com.kakao.golajuma.vote.infra.entity.OptionEntity;
-import com.kakao.golajuma.vote.infra.entity.VoteEntity;
-import com.kakao.golajuma.vote.infra.repository.DecisionRepository;
-import com.kakao.golajuma.vote.infra.repository.OptionRepository;
+import com.kakao.golajuma.auth.persistence.entity.UserEntity;
+import com.kakao.golajuma.auth.persistence.repository.UserRepository;
+import com.kakao.golajuma.vote.persistence.entity.Active;
+import com.kakao.golajuma.vote.persistence.entity.OptionEntity;
+import com.kakao.golajuma.vote.persistence.entity.VoteEntity;
+import com.kakao.golajuma.vote.persistence.repository.DecisionRepository;
+import com.kakao.golajuma.vote.persistence.repository.OptionRepository;
 import com.kakao.golajuma.vote.web.dto.response.CountOptionDto;
 import com.kakao.golajuma.vote.web.dto.response.OptionDto;
 import com.kakao.golajuma.vote.web.dto.response.VoteDto;
@@ -20,69 +20,63 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class GetVoteService {
-	private final OptionRepository optionJPARepository;
+	private final OptionRepository optionRepository;
 	private final UserRepository userRepository;
 	private final DecisionRepository decisionRepository;
 
-	public VoteDto getVote(VoteEntity vote, Long userId) {
-		// 투표의 옵션을 찾는다
-		List<OptionEntity> options = optionJPARepository.findAllByVoteId(vote.getId());
-		// 작성자 찾기
-		Long writerId = vote.getUserId();
-		UserEntity user = userRepository.findById(writerId).get();
+	public VoteDto execute(VoteEntity voteEntity, Long userId) {
+		List<OptionEntity> optionEntities = optionRepository.findAllByVoteId(voteEntity.getId());
+		UserEntity userEntity = findWriter(voteEntity);
 
-		boolean participate;
+		boolean isOwner = voteEntity.isOwner(userId);
 
-		boolean isOwner = vote.isOwner(userId);
+		Active active = voteEntity.checkActive();
 
-		Active active = vote.checkActive();
+		List<? super OptionDto> options = new ArrayList<>();
+		List<Boolean> choices = checkChoiceOptions(optionEntities, userId);
+		boolean participate = checkParticipate(choices);
 
-		List<? super OptionDto> optionList = new ArrayList<>();
-		// 참여했는지 여부 판단
-		List<Boolean> choiceList = checkChoiceOptions(options, userId);
-		participate = checkParticipate(choiceList);
-
-		// case 1 : 질문자, isOwner : true, participate : false, 옵션 카운트 표시
-		// case 2 : 응답자, 참여 O, isOwner : false, participate : true, 옵션 카운트 표시
-		// case 3 : 응답자, 참여 X, isOwner : false, participate : false, 옵션 카운트 미표시
-		// 투표가 진행되고 있는 상태에서(on) && 주인이 아니고 && 참여하지 않았을때만 옵션 Count를 보여주지 않음 그냥 OptionDto
-		if (vote.isOn() && !isOwner && !participate) {
-			for (OptionEntity option : options) {
-				OptionDto optionDto = OptionDto.makeOptionDto(option);
-				optionList.add(optionDto);
+		if (voteEntity.isOn() && !isOwner && !participate) {
+			for (OptionEntity optionEntity : optionEntities) {
+				OptionDto optionDto = OptionDto.convert(optionEntity);
+				options.add(optionDto);
 			}
 		} else {
-			for (int i = 0; i < options.size(); i++) {
-				OptionEntity option = options.get(i);
-				boolean choice = choiceList.get(i);
+			for (int i = 0; i < optionEntities.size(); i++) {
+				OptionEntity optionEntity = optionEntities.get(i);
+				boolean choice = choices.get(i);
 				CountOptionDto countOptionDto =
-						CountOptionDto.makeCountOptionDto(option, choice, vote.getVoteTotalCount());
-				optionList.add(countOptionDto);
+						CountOptionDto.convert(optionEntity, choice, voteEntity.getVoteTotalCount());
+				options.add(countOptionDto);
 			}
 		}
-		String category = getCategory(vote);
+		String category = getCategory(voteEntity);
 
-		return VoteDto.makeDto(vote, user, active, isOwner, participate, category, optionList);
+		return VoteDto.convert(voteEntity, userEntity, active, isOwner, participate, category, options);
 	}
 
-	private String getCategory(VoteEntity vote) {
-		return vote.getCategory().getCategory();
+	private UserEntity findWriter(VoteEntity voteEntity) {
+		Long writerId = voteEntity.getUserId();
+		return userRepository.findById(writerId).get();
 	}
 
-	private List<Boolean> checkChoiceOptions(List<OptionEntity> options, Long userId) {
+	private String getCategory(VoteEntity voteEntity) {
+		return voteEntity.getCategory().getCategory();
+	}
+
+	private List<Boolean> checkChoiceOptions(List<OptionEntity> optionEntities, Long userId) {
 		List<Boolean> chocieList = new ArrayList<>();
-		for (OptionEntity option : options) {
-			chocieList.add(checkChoiceOption(userId, option));
+		for (OptionEntity optionEntity : optionEntities) {
+			chocieList.add(checkChoiceOption(userId, optionEntity));
 		}
 		return chocieList;
 	}
 
-	private boolean checkChoiceOption(Long userId, OptionEntity option) {
-		// decision repo 탐색
-		return decisionRepository.existsByUserIdAndOptionId(userId, option.getId());
+	private boolean checkChoiceOption(Long userId, OptionEntity optionEntity) {
+		return decisionRepository.existsByUserIdAndOptionId(userId, optionEntity.getId());
 	}
 
-	private boolean checkParticipate(List<Boolean> choiceList) {
-		return choiceList.contains(Boolean.TRUE);
+	private boolean checkParticipate(List<Boolean> choices) {
+		return choices.contains(Boolean.TRUE);
 	}
 }

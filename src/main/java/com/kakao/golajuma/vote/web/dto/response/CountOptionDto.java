@@ -1,6 +1,6 @@
 package com.kakao.golajuma.vote.web.dto.response;
 
-import com.kakao.golajuma.vote.infra.entity.OptionEntity;
+import com.kakao.golajuma.vote.persistence.entity.OptionEntity;
 import com.kakao.golajuma.vote.util.ImageUploader;
 import com.kakao.golajuma.vote.util.OptionDivideUtil;
 import lombok.Getter;
@@ -22,10 +22,9 @@ public class CountOptionDto extends OptionDto {
 		this.optionRatio = ratio;
 	}
 
-	public static CountOptionDto makeCountOptionDto(
-			OptionEntity option, boolean choice, int totalCount) {
+	public static CountOptionDto convert(OptionEntity option, boolean choice, int totalCount) {
 		String image = ImageUploader.getImage(option.getOptionImage());
-		if (totalCount == 0) {
+		if (totalCount <= 0) {
 			totalCount = 1;
 		}
 		double ratio = OptionDivideUtil.getRatio(option.getOptionCount(), totalCount);

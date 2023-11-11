@@ -1,6 +1,6 @@
 package com.kakao.golajuma.auth.web.controller;
 
-import com.kakao.golajuma.auth.domain.service.ReadUserProfileService;
+import com.kakao.golajuma.auth.domain.service.GetUserProfileService;
 import com.kakao.golajuma.auth.domain.service.UpdateUserEmailService;
 import com.kakao.golajuma.auth.domain.service.UpdateUserNickNameService;
 import com.kakao.golajuma.auth.web.dto.request.UpdateUserEmailRequest;
@@ -23,36 +23,36 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserProfileController {
 
-	private final ReadUserProfileService readUserProfileService;
+	private final GetUserProfileService getUserProfileService;
 
 	private final UpdateUserEmailService updateUserEmailService;
 
 	private final UpdateUserNickNameService updateUserNickNameService;
 
 	@GetMapping("/profile")
-	public ApiResponse<ApiResponseBody.SuccessBody<UserProfileResponse>> readUserProfile(
+	public ApiResponse<ApiResponseBody.SuccessBody<UserProfileResponse>> getUserProfile(
 			@Login Long userId) {
 
-		UserProfileResponse responseData = readUserProfileService.execute(userId);
+		UserProfileResponse response = getUserProfileService.execute(userId);
 
-		return ApiResponseGenerator.success(responseData, HttpStatus.OK, MessageCode.GET);
+		return ApiResponseGenerator.success(response, HttpStatus.OK, MessageCode.GET);
 	}
 
 	@PatchMapping("/nickname")
 	public ApiResponse<ApiResponseBody.SuccessBody<UpdateNickNameResponse>> updateNickName(
 			@RequestBody @Valid UpdateUserNickNameRequest request, @Login Long userId) {
 
-		UpdateNickNameResponse responseData = updateUserNickNameService.execute(request, userId);
+		UpdateNickNameResponse response = updateUserNickNameService.execute(request, userId);
 
-		return ApiResponseGenerator.success(responseData, HttpStatus.OK, MessageCode.UPDATE);
+		return ApiResponseGenerator.success(response, HttpStatus.OK, MessageCode.UPDATE);
 	}
 
 	@PatchMapping("/email")
 	public ApiResponse<ApiResponseBody.SuccessBody<UpdateEmailResponse>> updateEmail(
 			@RequestBody @Valid UpdateUserEmailRequest request, @Login Long userId) {
 
-		UpdateEmailResponse responseData = updateUserEmailService.execute(request, userId);
+		UpdateEmailResponse response = updateUserEmailService.execute(request, userId);
 
-		return ApiResponseGenerator.success(responseData, HttpStatus.OK, MessageCode.UPDATE);
+		return ApiResponseGenerator.success(response, HttpStatus.OK, MessageCode.UPDATE);
 	}
 }
