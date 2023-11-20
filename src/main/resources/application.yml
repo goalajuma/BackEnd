@@ -9,4 +9,8 @@ spring:
         - dev-mysql
         - dev-token
         - dev-image
+      test:
+        - test-mysql
+        - test-token
+        - test-image
     active: local

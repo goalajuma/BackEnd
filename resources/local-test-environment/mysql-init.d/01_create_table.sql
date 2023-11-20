@@ -1,4 +1,4 @@
-use krampoline;
+use golajuma_test;
 create table user
 (
     user_id       bigint auto_increment
@@ -40,8 +40,6 @@ create table vote
     vote_type        varchar(255)  null
 );
 
-ALTER TABLE vote ADD FULLTEXT INDEX idx__title__content(vote_title, vote_content) WITH PARSER NGRAM;
-
 create table decision
 (
     decision_id        bigint auto_increment
@@ -67,15 +65,15 @@ create table comment
 
 create table vote_option
 (
-    option_id bigint auto_increment
-        primary key,
-    created_date datetime(6) not null,
-    deleted bit not null,
-    updated_date datetime(6) not null,
-    option_count integer,
-    option_image varchar(255),
-    option_name varchar(255) not null,
-    option_vote_id bigint not null
+     option_id bigint auto_increment
+         primary key,
+     created_date datetime(6) not null,
+     deleted bit not null,
+     updated_date datetime(6) not null,
+     option_count integer,
+     option_image varchar(255),
+     option_name varchar(255) not null,
+     option_vote_id bigint not null
 );
 
 ALTER TABLE vote ADD FULLTEXT INDEX idx_vote_content_title(vote_title, vote_content) WITH PARSER NGRAM;

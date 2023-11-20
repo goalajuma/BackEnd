@@ -40,8 +40,6 @@ create table vote
     vote_type        varchar(255)  null
 );
 
-ALTER TABLE vote ADD FULLTEXT INDEX idx_vote_content_title(vote_title, vote_content) WITH PARSER NGRAM;
-
 create table decision
 (
     decision_id        bigint auto_increment
@@ -77,3 +75,7 @@ create table vote_option
      option_name varchar(255) not null,
      option_vote_id bigint not null
 );
+
+ALTER TABLE vote ADD FULLTEXT INDEX idx_vote_content_title(vote_title, vote_content) WITH PARSER NGRAM;
+ALTER TABLE vote ADD FULLTEXT INDEX idx_vote_title(vote_title) WITH PARSER NGRAM;
+ALTER TABLE vote ADD FULLTEXT INDEX idx_vote_content(vote_content) WITH PARSER NGRAM;
