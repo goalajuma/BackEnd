@@ -27,7 +27,12 @@ jobs:
     - name: gradlew 실행 권한을 부여합니다.
       run: chmod +x gradlew
       shell : bash
-        
+
+    - name: DB를 실행합니다.
+      run: |
+        docker-compose -f resources/local-develop-environment/docker-compose.yml up -d
+        sleep 20
+
     - name: gradle를 캐싱합니다.
       uses: actions/cache@v3
       with:
@@ -46,11 +51,6 @@ jobs:
       if: always()
       with:
         files: '**/build/test-results/test/TEST-*.xml'
-
-    - name: DB를 실행합니다.
-      run: |
-        docker-compose -f resources/hiit-develop-environment/docker-compose.yml up -d
-        sleep 20
 
     - name: 테스트 실패 시, 실패한 코드 라인에 Check 코멘트를 등록합니다.
       uses: mikepenz/action-junit-report@v3
