@@ -19,7 +19,7 @@ public class GetVoteDetailService {
 
 	public GetVoteDetailResponse execute(Long voteId, Long userId) {
 		VoteEntity voteEntity =
-				voteRepository.findById(voteId).orElseThrow(() -> new NotFoundVoteException());
+				voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
 
 		VoteDto voteDto = getVoteService.execute(voteEntity, userId);
 
