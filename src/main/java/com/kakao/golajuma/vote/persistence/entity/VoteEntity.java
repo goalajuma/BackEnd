@@ -55,10 +55,7 @@ public class VoteEntity extends BaseEntity {
 	}
 
 	public boolean isOn() {
-		if (checkActive() == Active.CONTINUE) {
-			return true;
-		}
-		return false;
+		return checkActive() == Active.CONTINUE;
 	}
 
 	public static VoteEntity create(CreateVoteRequest request, Long userId) {
@@ -75,14 +72,11 @@ public class VoteEntity extends BaseEntity {
 	}
 
 	public boolean isOwner(Long userId) {
-		return userId == this.getUserId();
+		return userId.equals(this.getUserId());
 	}
 
 	public boolean isComplete() {
-		if (checkActive().equals(Active.COMPLETE)) {
-			return true;
-		}
-		return false;
+		return checkActive().equals(Active.COMPLETE);
 	}
 
 	public void updateCount() {
