@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface VoteRepository extends JpaRepository<VoteEntity, Integer> {
+public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 
 	@Query(
 			"select v from VoteEntity v"
@@ -85,7 +85,6 @@ public interface VoteRepository extends JpaRepository<VoteEntity, Integer> {
 			"select v from VoteEntity v where v.deleted = false and v.userId = :userId order by v.createdDate desc ")
 	List<VoteEntity> findAllByUserId(@Param("userId") Long userId);
 
-	Optional<VoteEntity> findById(Long id);
 
 	// 검색 기능
 	@Query(
