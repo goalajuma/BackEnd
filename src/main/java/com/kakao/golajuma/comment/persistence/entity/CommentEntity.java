@@ -31,6 +31,12 @@ public class CommentEntity extends BaseEntity {
 	@Column(name = ENTITY_PREFIX + "_content", length = 255, nullable = false)
 	private String content;
 
+	@Column(name = ENTITY_PREFIX + "_parent_id")
+	private Long parentId;
+
+	@Column(name = ENTITY_PREFIX + "_anonymous")
+	private boolean anonymous;
+
 	public void updateContent(String content) {
 		this.content = content;
 	}
