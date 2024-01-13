@@ -1,9 +1,8 @@
 package com.kakao.golajuma.vote.domain.service;
 
-import com.kakao.golajuma.vote.domain.exception.vote.AlreadyCloseException;
 import com.kakao.golajuma.vote.domain.exception.vote.NotFoundVoteException;
 import com.kakao.golajuma.vote.domain.exception.vote.NotWriterException;
-import com.kakao.golajuma.vote.domain.exception.vote.OnException;
+import com.kakao.golajuma.vote.domain.exception.vote.NotCloseException;
 import com.kakao.golajuma.vote.persistence.entity.VoteEntity;
 import com.kakao.golajuma.vote.persistence.repository.VoteRepository;
 import com.kakao.golajuma.vote.web.dto.request.ReopenVoteRequest;
@@ -24,7 +23,7 @@ public class ReopenVoteService {
             throw new NotWriterException();
         }
         if (voteEntity.isOn()) {
-            throw new OnException();
+            throw new NotCloseException();
         }
         int timeLimit = requestDto.getTimeLimit();
         voteEntity.reopen(timeLimit);
