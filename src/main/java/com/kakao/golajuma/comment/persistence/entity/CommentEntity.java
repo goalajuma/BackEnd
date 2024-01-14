@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = ENTITY_PREFIX)
+@Table(name = CommentEntity.ENTITY_PREFIX)
 public class CommentEntity extends BaseEntity {
 
 	public static final String ENTITY_PREFIX = "comment";
@@ -34,7 +34,7 @@ public class CommentEntity extends BaseEntity {
 	@Column(name = ENTITY_PREFIX + "_parent_id")
 	private Long parentId;
 
-	@Column(name = ENTITY_PREFIX + "_anonymous")
+	@Column(name = ENTITY_PREFIX + "_anonymous", nullable = false)
 	private boolean anonymous;
 
 	public void updateContent(String content) {
@@ -43,5 +43,13 @@ public class CommentEntity extends BaseEntity {
 
 	public Boolean isOwner(Long userId) {
 		return this.userId.equals(userId);
+	}
+
+	public Boolean isParent(){
+        return this.parentId == null;
+    }
+
+	public Boolean isDeleted(){
+		return this.getDeleted();
 	}
 }
