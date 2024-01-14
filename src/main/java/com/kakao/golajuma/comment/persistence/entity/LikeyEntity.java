@@ -16,7 +16,7 @@ import static com.kakao.golajuma.comment.persistence.entity.CommentEntity.ENTITY
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = ENTITY_PREFIX)
+@Table(name = LikeyEntity.ENTITY_PREFIX)
 public class LikeyEntity extends BaseEntity {
 
     public static final String ENTITY_PREFIX = "likey";
