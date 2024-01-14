@@ -46,6 +46,9 @@ public class VoteEntity extends BaseEntity {
 	@Column(name = ENTITY_PREFIX + "_type")
 	private String voteType;
 
+	@Column(name = ENTITY_PREFIX + "_anonymous")
+	private Boolean voteAnonymous;
+
 	public Active checkActive() {
 		LocalDateTime now = LocalDateTime.now();
 		if (voteEndDate.isBefore(now)) {
@@ -66,6 +69,7 @@ public class VoteEntity extends BaseEntity {
 						.voteTitle(request.getTitle())
 						.voteContent(request.getContent())
 						.voteType("null")
+						.voteAnonymous(request.isVoteAnonymous())
 						.voteEndDate(LocalDateTime.now().plusMinutes(request.getTimeLimit()))
 						.build();
 		return vote;
@@ -89,5 +93,16 @@ public class VoteEntity extends BaseEntity {
 
 	public void close() {
 		this.voteEndDate = LocalDateTime.now();
+	}
+
+	public void reopen(int timeLimit){
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime updateTime = this.getUpdatedDate();
+		updateTime = now;
+		voteEndDate = now.plusMinutes(timeLimit);
+	}
+
+	public void extendDeadline(int timeLimit) {
+		voteEndDate = LocalDateTime.now().plusMinutes(timeLimit);
 	}
 }

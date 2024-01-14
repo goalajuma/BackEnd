@@ -24,17 +24,20 @@ public class CreateVoteRequest implements AbstractRequestDto {
 
 	private String category;
 	private int timeLimit;
+	private boolean voteAnonymous;
 
 	public CreateVoteRequest(
 			String voteTitle,
 			String category,
 			String voteContent,
 			int timeLimit,
+			boolean voteAnonymous,
 			List<OptionDto> options) {
 		this.title = voteTitle;
 		this.category = category;
 		this.content = voteContent;
 		this.timeLimit = timeLimit;
+		this.voteAnonymous = voteAnonymous;
 		this.options = options;
 	}
 
