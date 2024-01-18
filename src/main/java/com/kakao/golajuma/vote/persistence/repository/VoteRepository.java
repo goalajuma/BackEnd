@@ -17,7 +17,7 @@ public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 			"select v from VoteEntity v"
 					+ " where v.deleted = false"
 					+ " and v.voteEndDate > :now"
-					+ " ORDER BY v.createdDate desc ")
+					+ " ORDER BY v.updatedDate desc ")
 	Slice<VoteEntity> findAllContinueVotesOrderByCreatedDate(
 			@Param("now") LocalDateTime now, Pageable pageable);
 
@@ -26,7 +26,7 @@ public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 					+ " where v.deleted = false"
 					+ " and v.voteEndDate > :now"
 					+ " and v.category = :category"
-					+ " ORDER BY v.createdDate desc ")
+					+ " ORDER BY v.updatedDate desc ")
 	Slice<VoteEntity> findAllContinueVotesByCategoryOrderByCreatedDate(
 			@Param("now") LocalDateTime now, @Param("category") Category category, Pageable pageable);
 
@@ -51,7 +51,7 @@ public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 			"select v from VoteEntity v"
 					+ " where v.deleted = false"
 					+ " and v.voteEndDate < :now"
-					+ " ORDER BY v.createdDate desc ")
+					+ " ORDER BY v.voteEndDate desc ")
 	Slice<VoteEntity> findAllFinishVotesOrderByCreatedDate(
 			@Param("now") LocalDateTime now, Pageable pageable);
 
@@ -60,7 +60,7 @@ public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 					+ " where v.deleted = false"
 					+ " and v.voteEndDate < :now"
 					+ " and v.category = :category"
-					+ " ORDER BY v.createdDate desc ")
+					+ " ORDER BY v.voteEndDate desc ")
 	Slice<VoteEntity> findAllFinishVotesByCategoryOrderByCreatedDate(
 			@Param("now") LocalDateTime now, @Param("category") Category category, Pageable pageable);
 
@@ -92,7 +92,7 @@ public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 					"SELECT * FROM vote v "
 							+ "WHERE v.deleted = false "
 							+ "AND match (vote_title, vote_content) AGAINST(:keyword) "
-							+ "ORDER BY v.created_date DESC ",
+							+ "ORDER BY v.updated_date DESC ",
 			nativeQuery = true)
 	Slice<VoteEntity> searchVotesOrderByCreatedDate(
 			@Param("keyword") String keyword, Pageable pageable);
@@ -103,7 +103,7 @@ public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 							+ " where v.deleted = false"
 							+ " AND match (vote_title, vote_content) AGAINST(:keyword) "
 							+ " and v.vote_category = ':category'"
-							+ " order by created_date desc ",
+							+ " order by updated_date desc ",
 			nativeQuery = true)
 	Slice<VoteEntity> searchVotesByCategoryOrderByCreatedDate(
 			@Param("keyword") String keyword, @Param("category") Category category, Pageable pageable);
@@ -141,7 +141,7 @@ public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 					+ " join DecisionEntity d on d.userId = :userId"
 					+ " join OptionEntity o on o.id = d.optionId and o.voteId = v.id"
 					+ " where v.deleted = false"
-					+ " order by v.createdDate desc")
+					+ " order by v.updatedDate desc")
 	List<VoteEntity> findAllParticipateListByUserId(Long userId);
 
 	@Query(
