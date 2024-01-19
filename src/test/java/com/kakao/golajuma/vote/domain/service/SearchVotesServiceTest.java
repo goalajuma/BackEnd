@@ -5,7 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.kakao.golajuma.vote.persistence.entity.Category;
+import com.kakao.golajuma.vote.persistence.entity.HistoryEntity;
 import com.kakao.golajuma.vote.persistence.entity.VoteEntity;
+import com.kakao.golajuma.vote.persistence.repository.HistoryRepository;
 import com.kakao.golajuma.vote.persistence.repository.VoteRepository;
 import com.kakao.golajuma.vote.web.dto.response.SearchVotesResponse;
 import com.kakao.golajuma.vote.web.dto.response.VoteDto;
@@ -27,6 +29,7 @@ class SearchVotesServiceTest {
 	@InjectMocks SearchVotesService searchVotesService;
 	@Mock VoteRepository voteRepository;
 	@Mock GetVoteService getVoteService;
+	@Mock HistoryRepository historyRepository;
 
 	String keyword;
 	Sort sort;
@@ -34,6 +37,7 @@ class SearchVotesServiceTest {
 	VoteEntity voteEntity;
 	List<VoteEntity> votes;
 	Slice<VoteEntity> voteList;
+	HistoryEntity historyEntity;
 
 	private void setup() {
 		// VoteEntity 생성
@@ -49,11 +53,13 @@ class SearchVotesServiceTest {
 		votes = new ArrayList<>();
 		votes.add(voteEntity);
 		voteList = new SliceImpl<>(votes);
+		historyEntity = HistoryEntity.builder().id(1L).userId(1L).keyword("keyword1").build();
 
 		VoteDto voteDto = new VoteDto(voteEntity, "username", "continue", true, true, "total");
 
 		// when
 		when(getVoteService.execute(any(), any())).thenReturn(voteDto);
+		when(historyRepository.save(any())).thenReturn(historyEntity);
 	}
 
 	private void normalThen(SearchVotesResponse result) {
