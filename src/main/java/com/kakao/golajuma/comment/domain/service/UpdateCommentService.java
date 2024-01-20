@@ -3,6 +3,7 @@ package com.kakao.golajuma.comment.domain.service;
 import com.kakao.golajuma.comment.domain.exception.NotFoundCommentException;
 import com.kakao.golajuma.comment.persistence.entity.CommentEntity;
 import com.kakao.golajuma.comment.persistence.repository.CommentRepository;
+import com.kakao.golajuma.comment.persistence.repository.LikeyRepository;
 import com.kakao.golajuma.comment.web.dto.request.UpdateCommentRequest;
 import com.kakao.golajuma.comment.web.dto.response.UpdateCommentResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ public class UpdateCommentService {
 	private final CommentRepository commentRepository;
 
 	private final GetUserNameService getUserNameService;
+
+	private final LikeyRepository likeyRepository;
 	/**
 	 * 댓글을 삭제한다.
 	 *
@@ -37,10 +40,12 @@ public class UpdateCommentService {
 
 		String newContent = requestDto.getContent();
 
-		String username = getUserNameService.execute(userId);
+		String username = getUserNameService.execute(commentEntity);
 
 		commentEntity.updateContent(newContent);
 
-		return new UpdateCommentResponse(commentEntity, true, username);
+		int likey = likeyRepository.countByCommentId(commentId);
+
+		return new UpdateCommentResponse(commentEntity, true, username, likey);
 	}
 }
