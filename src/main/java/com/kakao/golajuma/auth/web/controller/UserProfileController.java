@@ -5,7 +5,6 @@ import com.kakao.golajuma.auth.domain.service.UpdateUserNickNameService;
 import com.kakao.golajuma.auth.domain.service.UpdateUserPasswordService;
 import com.kakao.golajuma.auth.web.dto.request.UpdateUserPasswordRequest;
 import com.kakao.golajuma.auth.web.dto.request.UpdateUserNickNameRequest;
-import com.kakao.golajuma.auth.web.dto.response.UpdatePasswordResponse;
 import com.kakao.golajuma.auth.web.dto.response.UpdateNickNameResponse;
 import com.kakao.golajuma.auth.web.dto.response.UserProfileResponse;
 import com.kakao.golajuma.auth.web.support.Login;
@@ -48,7 +47,7 @@ public class UserProfileController {
 	}
 
 	@PatchMapping("/password")
-	public ApiResponse<ApiResponseBody.SuccessBody<Void>> updateEmail(
+	public ApiResponse<ApiResponseBody.SuccessBody<Void>> updatePassword(
 			@RequestBody @Valid UpdateUserPasswordRequest request, @Login Long userId) {
 
 		updateUserPasswordService.execute(request, userId);
