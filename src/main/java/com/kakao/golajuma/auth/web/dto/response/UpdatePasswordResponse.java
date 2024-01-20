@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UpdateEmailResponse {
+public class UpdatePasswordResponse {
 	private String email;
 }
