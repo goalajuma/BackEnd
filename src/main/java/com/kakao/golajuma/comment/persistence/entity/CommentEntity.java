@@ -7,6 +7,8 @@ import javax.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Objects;
+
 @Getter
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -41,15 +43,15 @@ public class CommentEntity extends BaseEntity {
 		this.content = content;
 	}
 
-	public Boolean isOwner(Long userId) {
+	public boolean isOwner(Long userId) {
 		return this.userId.equals(userId);
 	}
 
-	public Boolean isParent(){
-        return this.parentId == null;
+	public boolean isParent(){
+        return Objects.isNull(this.parentId);
     }
 
-	public Boolean isDeleted(){
+	public boolean isDeleted(){
 		return this.getDeleted();
 	}
 }

@@ -18,7 +18,7 @@ public class ParentCommentDto extends CommentDto{
         this.reply = new ArrayList<>();
     }
 
-    public void addReply(CommentEntity commentEntity, boolean isOwner, String username, int likey){
-        this.reply.add(new CommentDto(commentEntity, isOwner, username, likey));
+    public void addReply(CommentDto commentDto){
+        this.reply.add(commentDto);
     }
 }
