@@ -1,7 +1,9 @@
 package com.kakao.golajuma.vote.domain.service;
 
 import com.kakao.golajuma.vote.persistence.entity.Category;
+import com.kakao.golajuma.vote.persistence.entity.HistoryEntity;
 import com.kakao.golajuma.vote.persistence.entity.VoteEntity;
+import com.kakao.golajuma.vote.persistence.repository.HistoryRepository;
 import com.kakao.golajuma.vote.persistence.repository.VoteRepository;
 import com.kakao.golajuma.vote.web.dto.response.SearchVotesResponse;
 import com.kakao.golajuma.vote.web.dto.response.VoteDto;
@@ -21,6 +23,7 @@ public class SearchVotesService {
 
 	private final VoteRepository voteRepository;
 	private final GetVoteService getVoteService;
+	private final HistoryRepository historyRepository;
 	static int page = 0;
 	static int size = 5;
 
@@ -36,6 +39,9 @@ public class SearchVotesService {
 						.collect(Collectors.toList());
 
 		boolean isLast = voteEntities.isLast();
+
+		HistoryEntity historyEntity = HistoryEntity.create(userId, keyword);
+		historyRepository.save(historyEntity);
 
 		return SearchVotesResponse.convert(votes, isLast);
 	}
