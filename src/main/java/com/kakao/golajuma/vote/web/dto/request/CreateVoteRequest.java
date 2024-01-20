@@ -42,24 +42,12 @@ public class CreateVoteRequest implements AbstractRequestDto {
 	}
 
 	@Getter
-	public static class OptionDto {
-		@Size(max = 200, message = "옵션명은 200자를 넘을 수 없습니다.")
-		private String name;
-
-		private String image;
-
-		public OptionDto(String name) {
-			this.name = name;
-			this.image = null;
+	public static class OptionDto extends RequestOptionDto{
+		public OptionDto(String name, String image){
+			super(name, image);
 		}
-
-		public OptionDto(String name, String image) {
-			this.name = name;
-			this.image = image;
-		}
-
-		public String getImage() {
-			return this.image;
+		public OptionDto(String name){
+			super(name, null);
 		}
 	}
 }
