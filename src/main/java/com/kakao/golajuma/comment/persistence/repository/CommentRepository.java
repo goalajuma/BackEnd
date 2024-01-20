@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
-	@Query("select c from CommentEntity c where c.voteId = :voteId and c.deleted = false")
+	@Query("select c from CommentEntity c where c.voteId = :voteId")
 	List<CommentEntity> findByVoteId(@Param("voteId") Long voteId);
 
 	@Query("select c from CommentEntity c where c.userId = :userId and c.deleted = false")
