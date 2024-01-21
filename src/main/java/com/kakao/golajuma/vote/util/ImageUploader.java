@@ -8,6 +8,8 @@ import java.io.*;
 import java.util.Base64;
 import java.util.UUID;
 import javax.imageio.ImageIO;
+
+import com.kakao.golajuma.vote.web.dto.request.RequestOptionDto;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,7 +27,7 @@ public class ImageUploader {
 		this.UPLOAD_PATH = UPLOAD_PATH;
 	}
 
-	public String uploadImageByBase64(CreateVoteRequest.OptionDto request) {
+	public String uploadImageByBase64(RequestOptionDto request) {
 		String base64 = request.getImage();
 		String fileName = request.getName();
 
