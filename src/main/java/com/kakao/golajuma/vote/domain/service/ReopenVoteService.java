@@ -1,8 +1,8 @@
 package com.kakao.golajuma.vote.domain.service;
 
+import com.kakao.golajuma.vote.domain.exception.vote.NotCloseException;
 import com.kakao.golajuma.vote.domain.exception.vote.NotFoundVoteException;
 import com.kakao.golajuma.vote.domain.exception.vote.NotWriterException;
-import com.kakao.golajuma.vote.domain.exception.vote.NotCloseException;
 import com.kakao.golajuma.vote.persistence.entity.VoteEntity;
 import com.kakao.golajuma.vote.persistence.repository.VoteRepository;
 import com.kakao.golajuma.vote.web.dto.request.ReopenVoteRequest;
@@ -14,18 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class ReopenVoteService {
-    private final VoteRepository voteRepository;
+	private final VoteRepository voteRepository;
 
-    public void execute(Long voteId, Long userId, ReopenVoteRequest requestDto) {
-        VoteEntity voteEntity =
-                voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
-        if (!voteEntity.isOwner(userId)) {
-            throw new NotWriterException();
-        }
-        if (voteEntity.isOn()) {
-            throw new NotCloseException();
-        }
-        int timeLimit = requestDto.getTimeLimit();
-        voteEntity.reopen(timeLimit);
-    }
+	public void execute(Long voteId, Long userId, ReopenVoteRequest requestDto) {
+		VoteEntity voteEntity = voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
+		if (!voteEntity.isOwner(userId)) {
+			throw new NotWriterException();
+		}
+		if (voteEntity.isOn()) {
+			throw new NotCloseException();
+		}
+		int timeLimit = requestDto.getTimeLimit();
+		voteEntity.reopen(timeLimit);
+	}
 }

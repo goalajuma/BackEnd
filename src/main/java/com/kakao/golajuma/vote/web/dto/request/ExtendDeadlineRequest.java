@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ExtendDeadlineRequest implements AbstractRequestDto {
-    int timeLimit;
+	int timeLimit;
 
-    public ExtendDeadlineRequest(int timeLimit){
-        this.timeLimit = timeLimit;
-    }
+	public ExtendDeadlineRequest(int timeLimit) {
+		this.timeLimit = timeLimit;
+	}
 }

@@ -18,21 +18,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AddOptionService {
 
-    private final VoteRepository voteRepository;
-    private final OptionRepository optionRepository;
-    private final ImageUploader imageUploader;
+	private final VoteRepository voteRepository;
+	private final OptionRepository optionRepository;
+	private final ImageUploader imageUploader;
 
-    public void execute(AddOptionRequest request, Long voteId, Long userId){
-        VoteEntity voteEntity = voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
+	public void execute(AddOptionRequest request, Long voteId, Long userId) {
+		VoteEntity voteEntity = voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
 
-        if(!voteEntity.isOwner(userId)){
-            throw new NotWriterException();
-        }
+		if (!voteEntity.isOwner(userId)) {
+			throw new NotWriterException();
+		}
 
-        for (RequestOptionDto optionDto : request.getOptions()) {
-            OptionEntity optionEntity = OptionEntity.create(imageUploader, optionDto, voteId);
-            optionRepository.save(optionEntity);
-        }
-    }
-
+		for (RequestOptionDto optionDto : request.getOptions()) {
+			OptionEntity optionEntity = OptionEntity.create(imageUploader, optionDto, voteId);
+			optionRepository.save(optionEntity);
+		}
+	}
 }

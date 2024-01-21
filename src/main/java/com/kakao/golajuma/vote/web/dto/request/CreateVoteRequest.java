@@ -42,11 +42,12 @@ public class CreateVoteRequest implements AbstractRequestDto {
 	}
 
 	@Getter
-	public static class OptionDto extends RequestOptionDto{
-		public OptionDto(String name, String image){
+	public static class OptionDto extends RequestOptionDto {
+		public OptionDto(String name, String image) {
 			super(name, image);
 		}
-		public OptionDto(String name){
+
+		public OptionDto(String name) {
 			super(name, null);
 		}
 	}

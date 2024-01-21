@@ -11,17 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UpdateCommentLikeyService {
 
-    private final LikeyRepository likeyRepository;
+	private final LikeyRepository likeyRepository;
 
-    public void execute(Long commentId, Long userId){
-        likeyRepository.findByCommentIdUserId(commentId, userId)
-                .ifPresentOrElse(likeyRepository::delete, () -> save(commentId, userId));
-    }
-    private void save(Long commentId, Long userId){
-        LikeyEntity likeyEntity = LikeyEntity.builder()
-                .commentId(commentId)
-                .userId(userId)
-                .build();
-        likeyRepository.save(likeyEntity);
-    }
+	public void execute(Long commentId, Long userId) {
+		likeyRepository
+				.findByCommentIdUserId(commentId, userId)
+				.ifPresentOrElse(likeyRepository::delete, () -> save(commentId, userId));
+	}
+
+	private void save(Long commentId, Long userId) {
+		LikeyEntity likeyEntity = LikeyEntity.builder().commentId(commentId).userId(userId).build();
+		likeyRepository.save(likeyEntity);
+	}
 }

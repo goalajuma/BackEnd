@@ -18,8 +18,7 @@ public class GetVoteDetailService {
 	private final GetVoteService getVoteService;
 
 	public GetVoteDetailResponse execute(Long voteId, Long userId) {
-		VoteEntity voteEntity =
-				voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
+		VoteEntity voteEntity = voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
 
 		VoteDto voteDto = getVoteService.execute(voteEntity, userId);
 

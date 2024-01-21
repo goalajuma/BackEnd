@@ -16,8 +16,7 @@ public class CloseVoteService {
 	private final VoteRepository voteRepository;
 
 	public void execute(Long voteId, Long userId) {
-		VoteEntity voteEntity =
-				voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
+		VoteEntity voteEntity = voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
 		if (!voteEntity.isOwner(userId)) {
 			throw new NotWriterException();
 		}

@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class ExtendDeadlineController {
-    private final ExtendDeadlineService extendDeadlineService;
+	private final ExtendDeadlineService extendDeadlineService;
 
-    @PatchMapping("/votes/{voteId}/deadline")
-    public ApiResponse<ApiResponseBody.SuccessBody<Void>> deadline(
-            @PathVariable Long voteId, @Login Long userId, @RequestBody ExtendDeadlineRequest requestDto) {
-        extendDeadlineService.execute(voteId, userId, requestDto);
-        return ApiResponseGenerator.success(HttpStatus.OK, MessageCode.UPDATE);
-    }
+	@PatchMapping("/votes/{voteId}/deadline")
+	public ApiResponse<ApiResponseBody.SuccessBody<Void>> deadline(
+			@PathVariable Long voteId,
+			@Login Long userId,
+			@RequestBody ExtendDeadlineRequest requestDto) {
+		extendDeadlineService.execute(voteId, userId, requestDto);
+		return ApiResponseGenerator.success(HttpStatus.OK, MessageCode.UPDATE);
+	}
 }
