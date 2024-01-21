@@ -59,7 +59,8 @@ public class CreateVoteControllerTest {
 		options.add(option1);
 		options.add(option2);
 
-		CreateVoteRequest request = new CreateVoteRequest("군대 가야할까요?", "total", "...", 60, true, options);
+		CreateVoteRequest request =
+				new CreateVoteRequest("군대 가야할까요?", "total", "...", 60, true, options);
 
 		String requestBody = om.writeValueAsString(request);
 		System.out.println("테스트 : " + requestBody);
@@ -94,7 +95,8 @@ public class CreateVoteControllerTest {
 		options.add(option1);
 		options.add(option2);
 
-		CreateVoteRequest request = new CreateVoteRequest("군대 가야할까요?", "total", "...", 60, true, options);
+		CreateVoteRequest request =
+				new CreateVoteRequest("군대 가야할까요?", "total", "...", 60, true, options);
 
 		String requestBody = om.writeValueAsString(request);
 		System.out.println("테스트 : " + requestBody);
@@ -160,7 +162,8 @@ public class CreateVoteControllerTest {
 		options.add(option1);
 		options.add(option2);
 
-		CreateVoteRequest request = new CreateVoteRequest("군대 가야할까요?", "total", "...", 60, true, options);
+		CreateVoteRequest request =
+				new CreateVoteRequest("군대 가야할까요?", "total", "...", 60, true, options);
 
 		String requestBody = om.writeValueAsString(request);
 		System.out.println("테스트 : " + requestBody);
@@ -201,7 +204,8 @@ public class CreateVoteControllerTest {
 		options.add(option6);
 		options.add(option7);
 
-		CreateVoteRequest request = new CreateVoteRequest("군대 가야할까요?", "total", "...", 60, true, options);
+		CreateVoteRequest request =
+				new CreateVoteRequest("군대 가야할까요?", "total", "...", 60, true, options);
 
 		String requestBody = om.writeValueAsString(request);
 		System.out.println("테스트 : " + requestBody);
@@ -230,7 +234,8 @@ public class CreateVoteControllerTest {
 		CreateVoteRequest.OptionDto option1 = new CreateVoteRequest.OptionDto("가라");
 		options.add(option1);
 
-		CreateVoteRequest request = new CreateVoteRequest("군대 가야할까요?", "total", "...", 60, true, options);
+		CreateVoteRequest request =
+				new CreateVoteRequest("군대 가야할까요?", "total", "...", 60, true, options);
 
 		String requestBody = om.writeValueAsString(request);
 		System.out.println("테스트 : " + requestBody);

@@ -2,9 +2,8 @@ package com.kakao.golajuma.vote.persistence.entity;
 
 import com.kakao.golajuma.common.BaseEntity;
 import com.kakao.golajuma.vote.util.ImageUploader;
-import javax.persistence.*;
-
 import com.kakao.golajuma.vote.web.dto.request.RequestOptionDto;
+import javax.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
@@ -36,7 +35,8 @@ public class OptionEntity extends BaseEntity {
 	@ColumnDefault("0")
 	private int optionCount;
 
-	public static OptionEntity create(ImageUploader imageUploader, RequestOptionDto optionDto, Long voteId){
+	public static OptionEntity create(
+			ImageUploader imageUploader, RequestOptionDto optionDto, Long voteId) {
 		if (optionDto.getImage() != null) {
 			String imagePath = imageUploader.uploadImageByBase64(optionDto);
 			return OptionEntity.createWithImage(optionDto, imagePath, voteId);

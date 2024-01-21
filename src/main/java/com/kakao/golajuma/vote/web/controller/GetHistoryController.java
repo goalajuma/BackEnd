@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GetHistoryController {
 
-    private final GetHistoryService getHistoryService;
+	private final GetHistoryService getHistoryService;
 
-    @GetMapping("/search/history")
-    public ApiResponse<ApiResponseBody.SuccessBody<HistoryResponse>> getHistory(@Login Long userId){
-        HistoryResponse response = getHistoryService.execute(userId);
-        return ApiResponseGenerator.success(response, HttpStatus.OK, MessageCode.GET);
-    }
+	@GetMapping("/search/history")
+	public ApiResponse<ApiResponseBody.SuccessBody<HistoryResponse>> getHistory(@Login Long userId) {
+		HistoryResponse response = getHistoryService.execute(userId);
+		return ApiResponseGenerator.success(response, HttpStatus.OK, MessageCode.GET);
+	}
 }

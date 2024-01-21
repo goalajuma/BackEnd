@@ -95,7 +95,7 @@ public class VoteEntity extends BaseEntity {
 		this.voteEndDate = LocalDateTime.now();
 	}
 
-	public void reopen(int timeLimit){
+	public void reopen(int timeLimit) {
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime updateTime = this.getUpdatedDate();
 		updateTime = now;

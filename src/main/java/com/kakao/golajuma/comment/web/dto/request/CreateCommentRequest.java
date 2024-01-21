@@ -13,16 +13,14 @@ import lombok.*;
 @Builder
 public class CreateCommentRequest implements AbstractRequestDto {
 
-	@NotNull
-	private Boolean anonymous;
+	@NotNull private Boolean anonymous;
 
 	@NotBlank // null, 빈 문자열, 스페이스만 포함한 문자열 불가
 	@Size(min = 1, max = 255) // 최소 길이, 최대 길이 제한
 	private String content;
 
 	public CommentEntity toEntity(Long voteId, Long userId, Long parentId) {
-		return CommentEntity
-				.builder()
+		return CommentEntity.builder()
 				.voteId(voteId)
 				.userId(userId)
 				.content(this.content)
