@@ -13,10 +13,9 @@ import com.kakao.golajuma.vote.persistence.entity.OptionEntity;
 import com.kakao.golajuma.vote.persistence.entity.VoteEntity;
 import com.kakao.golajuma.vote.persistence.repository.DecisionRepository;
 import com.kakao.golajuma.vote.persistence.repository.OptionRepository;
+import com.kakao.golajuma.vote.persistence.repository.VoteRepository;
 import java.util.List;
 import java.util.function.Predicate;
-
-import com.kakao.golajuma.vote.persistence.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,8 +46,10 @@ public class CreateCommentService {
 	public CreateCommentResponse execute(CreateCommentRequest requestDto, Long voteId, Long userId) {
 		VoteEntity voteEntity = voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
 
-		//완료된 투표가 아니고, 주인도 아니고, 투표도 안했으면 오류발생. 주인이거나 완료된 투표거나, 투표했거나 셋 중 하나만 만족해도 문제없음
-		if (!voteEntity.isComplete() && !voteEntity.isOwner(userId) && existDecisionByVote(userId, voteId)){
+		// 완료된 투표가 아니고, 주인도 아니고, 투표도 안했으면 오류발생. 주인이거나 완료된 투표거나, 투표했거나 셋 중 하나만 만족해도 문제없음
+		if (!voteEntity.isComplete()
+				&& !voteEntity.isOwner(userId)
+				&& existDecisionByVote(userId, voteId)) {
 			throw new NotFoundDecisionVoteException();
 		}
 
@@ -59,18 +60,28 @@ public class CreateCommentService {
 		return new CreateCommentResponse(commentEntity, true, username, 0);
 	}
 
-	public CreateCommentReplyResponse execute(CreateCommentReplyRequest requestDto, Long commentId, Long userId){
-		//부모 댓글을 검색하고 부모 댓글이 존재한다면 해당 댓글 저장
-		CommentEntity parentCommentEntity = commentRepository.findById(commentId).orElseThrow(NotFoundCommentException::new);
+	public CreateCommentReplyResponse execute(
+			CreateCommentReplyRequest requestDto, Long commentId, Long userId) {
+		// 부모 댓글을 검색하고 부모 댓글이 존재한다면 해당 댓글 저장
+		CommentEntity parentCommentEntity =
+				commentRepository.findById(commentId).orElseThrow(NotFoundCommentException::new);
 
-		VoteEntity voteEntity = voteRepository.findById(parentCommentEntity.getVoteId()).orElseThrow(NotFoundVoteException::new);
+		VoteEntity voteEntity =
+				voteRepository
+						.findById(parentCommentEntity.getVoteId())
+						.orElseThrow(NotFoundVoteException::new);
 
-		//완료된 투표가 아니고, 주인도 아니고, 투표도 안했으면 오류발생. 주인이거나 완료된 투표거나, 투표했거나 셋 중 하나만 만족해도 문제없음
-		if (!voteEntity.isComplete() && !voteEntity.isOwner(userId) && !existDecisionByVote(userId, parentCommentEntity.getVoteId())){
+		// 완료된 투표가 아니고, 주인도 아니고, 투표도 안했으면 오류발생. 주인이거나 완료된 투표거나, 투표했거나 셋 중 하나만 만족해도 문제없음
+		if (!voteEntity.isComplete()
+				&& !voteEntity.isOwner(userId)
+				&& !existDecisionByVote(userId, parentCommentEntity.getVoteId())) {
 			throw new NotFoundDecisionVoteException();
 		}
 
-		CommentEntity commentEntity = saveComment(requestDto.toEntity(parentCommentEntity.getVoteId(), userId, parentCommentEntity.getId()));
+		CommentEntity commentEntity =
+				saveComment(
+						requestDto.toEntity(
+								parentCommentEntity.getVoteId(), userId, parentCommentEntity.getId()));
 
 		String username = getUserNameService.execute(commentEntity);
 

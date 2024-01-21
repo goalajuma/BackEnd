@@ -85,7 +85,6 @@ public interface VoteRepository extends JpaRepository<VoteEntity, Long> {
 			"select v from VoteEntity v where v.deleted = false and v.userId = :userId order by v.createdDate desc ")
 	List<VoteEntity> findAllByUserId(@Param("userId") Long userId);
 
-
 	// 검색 기능
 	@Query(
 			value =

@@ -3,11 +3,10 @@ package com.kakao.golajuma.comment.persistence.entity;
 import static com.kakao.golajuma.comment.persistence.entity.CommentEntity.ENTITY_PREFIX;
 
 import com.kakao.golajuma.common.BaseEntity;
+import java.util.Objects;
 import javax.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
-import java.util.Objects;
 
 @Getter
 @SuperBuilder(toBuilder = true)
@@ -47,11 +46,11 @@ public class CommentEntity extends BaseEntity {
 		return this.userId.equals(userId);
 	}
 
-	public boolean isParent(){
-        return Objects.isNull(this.parentId);
-    }
+	public boolean isParent() {
+		return Objects.isNull(this.parentId);
+	}
 
-	public boolean isDeleted(){
+	public boolean isDeleted() {
 		return this.getDeleted();
 	}
 }

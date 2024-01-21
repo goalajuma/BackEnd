@@ -13,15 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class ExtendDeadlineService {
-    private final VoteRepository voteRepository;
+	private final VoteRepository voteRepository;
 
-    public void execute(Long voteId, Long userId, ExtendDeadlineRequest requestDto) {
-        VoteEntity voteEntity =
-                voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
-        if (!voteEntity.isOwner(userId)) {
-            throw new NotWriterException();
-        }
-        int timeLimit = requestDto.getTimeLimit();
-        voteEntity.extendDeadline(timeLimit);
-    }
+	public void execute(Long voteId, Long userId, ExtendDeadlineRequest requestDto) {
+		VoteEntity voteEntity = voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
+		if (!voteEntity.isOwner(userId)) {
+			throw new NotWriterException();
+		}
+		int timeLimit = requestDto.getTimeLimit();
+		voteEntity.extendDeadline(timeLimit);
+	}
 }

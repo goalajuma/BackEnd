@@ -12,14 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class RemoveVoteService {
-    private final VoteRepository voteRepository;
+	private final VoteRepository voteRepository;
 
-    public void execute(Long voteId, Long userId) {
-        VoteEntity voteEntity =
-                voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
-        if (!voteEntity.isOwner(userId)) {
-            throw new NotWriterException();
-        }
-        voteEntity.delete();
-    }
+	public void execute(Long voteId, Long userId) {
+		VoteEntity voteEntity = voteRepository.findById(voteId).orElseThrow(NotFoundVoteException::new);
+		if (!voteEntity.isOwner(userId)) {
+			throw new NotWriterException();
+		}
+		voteEntity.delete();
+	}
 }

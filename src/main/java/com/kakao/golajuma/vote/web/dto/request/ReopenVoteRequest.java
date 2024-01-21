@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ReopenVoteRequest implements AbstractRequestDto {
-    private int timeLimit;
+	private int timeLimit;
 
-    public ReopenVoteRequest(int timeLimit){
-        this.timeLimit = timeLimit;
-    }
+	public ReopenVoteRequest(int timeLimit) {
+		this.timeLimit = timeLimit;
+	}
 }
