@@ -13,4 +13,4 @@ spring:
         - test-mysql
         - local-token
         - local-image
-    active: local
+    active: ${PROFILE}
