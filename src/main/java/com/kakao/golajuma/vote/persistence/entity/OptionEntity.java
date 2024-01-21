@@ -1,8 +1,10 @@
 package com.kakao.golajuma.vote.persistence.entity;
 
 import com.kakao.golajuma.common.BaseEntity;
-import com.kakao.golajuma.vote.web.dto.request.CreateVoteRequest;
+import com.kakao.golajuma.vote.util.ImageUploader;
 import javax.persistence.*;
+
+import com.kakao.golajuma.vote.web.dto.request.RequestOptionDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
@@ -14,7 +16,6 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name = "vote_" + OptionEntity.ENTITY_PREFIX)
 public class OptionEntity extends BaseEntity {
-
 	public static final String ENTITY_PREFIX = "option";
 
 	@Id
@@ -35,7 +36,15 @@ public class OptionEntity extends BaseEntity {
 	@ColumnDefault("0")
 	private int optionCount;
 
-	public static OptionEntity create(CreateVoteRequest.OptionDto request, Long voteId) {
+	public static OptionEntity create(ImageUploader imageUploader, RequestOptionDto optionDto, Long voteId){
+		if (optionDto.getImage() != null) {
+			String imagePath = imageUploader.uploadImageByBase64(optionDto);
+			return OptionEntity.createWithImage(optionDto, imagePath, voteId);
+		}
+		return OptionEntity.createWithoutImage(optionDto, voteId);
+	}
+
+	public static OptionEntity createWithoutImage(RequestOptionDto request, Long voteId) {
 		return OptionEntity.builder()
 				.voteId(voteId)
 				.optionName(request.getName())
@@ -44,7 +53,7 @@ public class OptionEntity extends BaseEntity {
 	}
 
 	public static OptionEntity createWithImage(
-			CreateVoteRequest.OptionDto request, String imagePath, Long voteId) {
+			RequestOptionDto request, String imagePath, Long voteId) {
 		return OptionEntity.builder()
 				.voteId(voteId)
 				.optionName(request.getName())
