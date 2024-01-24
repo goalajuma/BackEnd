@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.golajuma.auth.domain.token.TokenProvider;
 import com.kakao.golajuma.auth.persistence.entity.UserEntity;
 import com.kakao.golajuma.auth.persistence.repository.UserRepository;
-import com.kakao.golajuma.auth.web.dto.request.UpdateUserEmailRequest;
 import com.kakao.golajuma.auth.web.dto.request.UpdateUserNickNameRequest;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,14 +58,14 @@ class UpdateUserNickNameApiTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.data.nickname").hasJsonPath());
 	}
 
-	@DisplayName("닉네임이 중복이기 때문에 이메일 업데이트에 실패한다.")
+	@DisplayName("닉네임이 중복이기 때문에 닉네임 업데이트에 실패한다.")
 	@Transactional
 	@Test
-	void duplicate_update_email_test() throws Exception {
+	void duplicate_update_nickname_test() throws Exception {
 		// given
 		UserEntity userEntity = userRepository.findById(10L).get();
-		UpdateUserEmailRequest requestDto =
-				UpdateUserEmailRequest.builder().email(userEntity.getNickname()).build();
+		UpdateUserNickNameRequest requestDto =
+				UpdateUserNickNameRequest.builder().nickname(userEntity.getNickname()).build();
 		String requestBody = om.writeValueAsString(requestDto);
 		// when
 		ResultActions resultActions =
