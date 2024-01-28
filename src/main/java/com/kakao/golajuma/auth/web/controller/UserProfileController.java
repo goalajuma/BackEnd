@@ -1,11 +1,10 @@
 package com.kakao.golajuma.auth.web.controller;
 
 import com.kakao.golajuma.auth.domain.service.GetUserProfileService;
-import com.kakao.golajuma.auth.domain.service.UpdateUserEmailService;
 import com.kakao.golajuma.auth.domain.service.UpdateUserNickNameService;
-import com.kakao.golajuma.auth.web.dto.request.UpdateUserEmailRequest;
+import com.kakao.golajuma.auth.domain.service.UpdateUserPasswordService;
 import com.kakao.golajuma.auth.web.dto.request.UpdateUserNickNameRequest;
-import com.kakao.golajuma.auth.web.dto.response.UpdateEmailResponse;
+import com.kakao.golajuma.auth.web.dto.request.UpdateUserPasswordRequest;
 import com.kakao.golajuma.auth.web.dto.response.UpdateNickNameResponse;
 import com.kakao.golajuma.auth.web.dto.response.UserProfileResponse;
 import com.kakao.golajuma.auth.web.support.Login;
@@ -25,7 +24,7 @@ public class UserProfileController {
 
 	private final GetUserProfileService getUserProfileService;
 
-	private final UpdateUserEmailService updateUserEmailService;
+	private final UpdateUserPasswordService updateUserPasswordService;
 
 	private final UpdateUserNickNameService updateUserNickNameService;
 
@@ -47,12 +46,12 @@ public class UserProfileController {
 		return ApiResponseGenerator.success(response, HttpStatus.OK, MessageCode.UPDATE);
 	}
 
-	@PatchMapping("/email")
-	public ApiResponse<ApiResponseBody.SuccessBody<UpdateEmailResponse>> updateEmail(
-			@RequestBody @Valid UpdateUserEmailRequest request, @Login Long userId) {
+	@PatchMapping("/password")
+	public ApiResponse<ApiResponseBody.SuccessBody<Void>> updatePassword(
+			@RequestBody @Valid UpdateUserPasswordRequest request, @Login Long userId) {
 
-		UpdateEmailResponse response = updateUserEmailService.execute(request, userId);
+		updateUserPasswordService.execute(request, userId);
 
-		return ApiResponseGenerator.success(response, HttpStatus.OK, MessageCode.UPDATE);
+		return ApiResponseGenerator.success(HttpStatus.OK, MessageCode.UPDATE);
 	}
 }

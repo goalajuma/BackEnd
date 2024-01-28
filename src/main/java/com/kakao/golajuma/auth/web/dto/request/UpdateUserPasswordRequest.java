@@ -1,8 +1,7 @@
 package com.kakao.golajuma.auth.web.dto.request;
 
-import com.kakao.golajuma.auth.web.supplier.EmailSupplier;
+import com.kakao.golajuma.auth.web.supplier.PasswordSupplier;
 import com.kakao.golajuma.common.marker.AbstractRequestDto;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -10,8 +9,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(toBuilder = true)
-public class UpdateUserEmailRequest implements AbstractRequestDto, EmailSupplier {
+public class UpdateUserPasswordRequest implements AbstractRequestDto, PasswordSupplier {
 	@NotBlank(message = ValidExceptionMessage.EMPTY_MESSAGE)
-	@Email(message = ValidExceptionMessage.EMAIL_FORMAT_MESSAGE)
-	private String email;
+	private String newPassword;
 }
