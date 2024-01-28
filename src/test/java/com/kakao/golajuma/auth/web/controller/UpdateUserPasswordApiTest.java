@@ -3,9 +3,8 @@ package com.kakao.golajuma.auth.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.golajuma.auth.domain.token.TokenProvider;
 import com.kakao.golajuma.auth.persistence.repository.UserRepository;
-import javax.transaction.Transactional;
-
 import com.kakao.golajuma.auth.web.dto.request.UpdateUserPasswordRequest;
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,7 +51,6 @@ class UpdateUserPasswordApiTest {
 								.content(requestBody)
 								.contentType(MediaType.APPLICATION_JSON));
 		// then
-		resultActions
-				.andExpect(MockMvcResultMatchers.status().isOk());
+		resultActions.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 }

@@ -8,8 +8,6 @@ import com.kakao.golajuma.auth.persistence.entity.UserEntity;
 import com.kakao.golajuma.auth.persistence.repository.UserRepository;
 import com.kakao.golajuma.auth.web.dto.request.UpdateUserPasswordRequest;
 import java.util.Optional;
-
-import com.kakao.golajuma.comment.persistence.entity.CommentEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
