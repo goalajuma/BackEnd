@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   mysql:
-    container_name: goalajuma-mysql-dev
+    container_name: goalajuma-mysql-front
     image: mysql/mysql-server:8.0.27
     environment:
       - MYSQL_DATABASE=goalajuma
@@ -18,17 +18,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: goalajuma-app-dev
+    container_name: goalajuma-app-front
     ports:
       - "8080:8080"
     depends_on:
       - mysql
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://goalajuma-mysql-dev:3306/goalajuma?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://goalajuma-mysql-front:3306/goalajuma?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: local
     networks: #사용할 네트워크 지정
       - goalajuma-network
 networks:
