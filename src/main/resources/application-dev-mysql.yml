@@ -6,8 +6,8 @@ server:
   port: 8080
 spring:
   datasource:
-    url: goalajuma-database.c9gksc4siyzc.ap-northeast-2.rds.amazonaws.com
-    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://goalajuma-database.c9gksc4siyzc.ap-northeast-2.rds.amazonaws.com:3306/goalajuma
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: admin
     password: admin1234
   jpa:
