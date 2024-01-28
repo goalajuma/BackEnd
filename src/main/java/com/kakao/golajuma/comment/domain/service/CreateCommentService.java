@@ -49,7 +49,7 @@ public class CreateCommentService {
 		// 완료된 투표가 아니고, 주인도 아니고, 투표도 안했으면 오류발생. 주인이거나 완료된 투표거나, 투표했거나 셋 중 하나만 만족해도 문제없음
 		if (!voteEntity.isComplete()
 				&& !voteEntity.isOwner(userId)
-				&& existDecisionByVote(userId, voteId)) {
+				&& !existDecisionByVote(userId, voteId)) {
 			throw new NotFoundDecisionVoteException();
 		}
 

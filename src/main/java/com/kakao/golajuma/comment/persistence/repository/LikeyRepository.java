@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LikeyRepository extends JpaRepository<LikeyEntity, Long> {
-	@Query("select count(l) from LikeyEntity l where l.commentId = :commentId and l.deleted = false")
+	@Query(
+			"select count(l.id) from LikeyEntity l where l.commentId = :commentId and l.deleted = false")
 	int countByCommentId(@Param("commentId") Long commentId);
 
 	@Query("select l from LikeyEntity l where l.commentId = :commentId and l.userId = :userId")

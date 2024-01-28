@@ -8,6 +8,7 @@ import com.kakao.golajuma.auth.persistence.entity.UserEntity;
 import com.kakao.golajuma.comment.domain.exception.NotFoundCommentException;
 import com.kakao.golajuma.comment.persistence.entity.CommentEntity;
 import com.kakao.golajuma.comment.persistence.repository.CommentRepository;
+import com.kakao.golajuma.comment.persistence.repository.LikeyRepository;
 import com.kakao.golajuma.comment.web.dto.request.UpdateCommentRequest;
 import com.kakao.golajuma.comment.web.dto.response.UpdateCommentResponse;
 import java.util.Optional;
@@ -24,6 +25,8 @@ class UpdateCommentServiceTest {
 	@InjectMocks private UpdateCommentService updateCommentService;
 
 	@Mock private CommentRepository commentRepository;
+
+	@Mock private LikeyRepository likeyRepository;
 
 	@Mock private GetUserNameService getUserNameService;
 
@@ -49,7 +52,9 @@ class UpdateCommentServiceTest {
 
 		when(commentRepository.findByCommentIdUserId(commentId, userId))
 				.thenReturn(Optional.of(commentEntity));
-		when(getUserNameService.execute(userId)).thenReturn(userEntity.getNickname());
+		when(getUserNameService.execute(commentEntity)).thenReturn(userEntity.getNickname());
+
+		when(likeyRepository.countByCommentId(commentId)).thenReturn(2);
 		// when
 		UpdateCommentResponse response = updateCommentService.execute(requestDto, commentId, userId);
 		// then

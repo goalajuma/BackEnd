@@ -5,12 +5,15 @@ spring:
         - local-mysql
         - local-token
         - local-image
+        - local-mail
       dev:
         - dev-mysql
         - dev-token
         - dev-image
+        - dev-mail
       test:
         - test-mysql
         - local-token
         - local-image
+    include: secret
     active: ${PROFILE}

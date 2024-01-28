@@ -5,4 +5,4 @@ spring:
 
 image:
   upload:
-    path: /src/main/java/com/kakao/golajuma/vote/infra/images/
+    path: ${security.image}
