@@ -6,7 +6,7 @@ spring:
 security:
   jwt:
     token:
-      secretKey: eeosoverflowsecretekeyeeosoverflowsecretekey
+      secretKey: ${security.key}
       access:
         validTime: 2629800000
       refresh:
