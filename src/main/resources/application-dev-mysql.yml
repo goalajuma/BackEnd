@@ -6,10 +6,10 @@ server:
   port: 8080
 spring:
   datasource:
-    url: ${DATABASE_URL}
+    url: goalajuma-database.c9gksc4siyzc.ap-northeast-2.rds.amazonaws.com
     driver-class-name: org.mariadb.jdbc.Driver
-    username: ${MARIADB_USERNAME}
-    password: ${MARIADB_ROOT_PASSWORD}
+    username: admin
+    password: admin1234
   jpa:
     hibernate:
       ddl-auto: update
