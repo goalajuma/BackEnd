@@ -30,10 +30,13 @@ class CreateCommentApiTest {
 
 	private String jwtToken;
 
+	private String noDecisionJwtToken;
+
 	@BeforeEach
 	void setUp() {
 		// given
 		jwtToken = tokenProvider.createAccessToken(1L);
+		noDecisionJwtToken = tokenProvider.createAccessToken(25L);
 	}
 
 	@DisplayName("유저는 댓글을 작성하는데 성공한다.")
@@ -41,7 +44,8 @@ class CreateCommentApiTest {
 	@Test
 	void create_comment_success_test() throws Exception {
 		// given
-		CreateCommentRequest requestDto = CreateCommentRequest.builder().content("메롱이다.").build();
+		CreateCommentRequest requestDto =
+				CreateCommentRequest.builder().content("메롱이다.").anonymous(true).build();
 		String requestBody = om.writeValueAsString(requestDto);
 
 		// when
@@ -104,14 +108,15 @@ class CreateCommentApiTest {
 		@Test
 		void not_exist_decision_create_comment_fail_test() throws Exception {
 			// given
-			CreateCommentRequest requestDto = CreateCommentRequest.builder().content("content").build();
+			CreateCommentRequest requestDto =
+					CreateCommentRequest.builder().content("content").anonymous(true).build();
 			String requestBody = om.writeValueAsString(requestDto);
 
 			// when
 			ResultActions resultActions =
 					mvc.perform(
-							MockMvcRequestBuilders.post("/votes/5/comments")
-									.header("Authorization", "Bearer " + jwtToken)
+							MockMvcRequestBuilders.post("/votes/27/comments")
+									.header("Authorization", "Bearer " + noDecisionJwtToken)
 									.content(requestBody)
 									.contentType(MediaType.APPLICATION_JSON));
 			// then

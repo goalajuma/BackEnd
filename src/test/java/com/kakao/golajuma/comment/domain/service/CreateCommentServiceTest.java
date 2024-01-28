@@ -13,9 +13,12 @@ import com.kakao.golajuma.comment.persistence.repository.CommentRepository;
 import com.kakao.golajuma.comment.web.dto.request.CreateCommentRequest;
 import com.kakao.golajuma.comment.web.dto.response.CreateCommentResponse;
 import com.kakao.golajuma.vote.persistence.entity.OptionEntity;
+import com.kakao.golajuma.vote.persistence.entity.VoteEntity;
 import com.kakao.golajuma.vote.persistence.repository.DecisionRepository;
 import com.kakao.golajuma.vote.persistence.repository.OptionRepository;
+import com.kakao.golajuma.vote.persistence.repository.VoteRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +41,8 @@ class CreateCommentServiceTest {
 
 	@Mock private OptionRepository optionRepository;
 
+	@Mock private VoteRepository voteRepository;
+
 	@Test
 	@DisplayName("유저가 새로운 댓글을 저장하는데 성공한다.")
 	void create_comment_success_test() {
@@ -46,7 +51,8 @@ class CreateCommentServiceTest {
 		Long voteId = 1L;
 		Long commentId = 1L;
 
-		CreateCommentRequest requestDto = CreateCommentRequest.builder().content("contents").build();
+		CreateCommentRequest requestDto =
+				CreateCommentRequest.builder().content("contents").anonymous(true).build();
 
 		CommentEntity commentEntity =
 				CommentEntity.builder()
@@ -54,6 +60,7 @@ class CreateCommentServiceTest {
 						.voteId(voteId)
 						.userId(userId)
 						.content("contents")
+						.anonymous(true)
 						.build();
 
 		UserEntity userEntity = UserEntity.builder().id(1L).nickname("tester").build();
@@ -64,7 +71,9 @@ class CreateCommentServiceTest {
 
 		when(decisionRepository.existsByUserIdAndOptionId(anyLong(), anyLong())).thenReturn(true);
 
-		when(getUserNameService.execute(userId)).thenReturn(userEntity.getNickname());
+		when(voteRepository.findById(voteId)).thenReturn(Optional.of(mock(VoteEntity.class)));
+
+		when(getUserNameService.execute(commentEntity)).thenReturn(userEntity.getNickname());
 
 		when(commentRepository.save(any())).thenReturn(commentEntity);
 
@@ -88,15 +97,28 @@ class CreateCommentServiceTest {
 			Long userId = 99999999L;
 			Long voteId = 1L;
 
-			CreateCommentRequest requestDto = CreateCommentRequest.builder().content("contents").build();
+			CommentEntity commentEntity =
+					CommentEntity.builder()
+							.voteId(voteId)
+							.userId(userId)
+							.content("contents")
+							.anonymous(true)
+							.build();
+
+			CreateCommentRequest requestDto =
+					CreateCommentRequest.builder().content("contents").anonymous(true).build();
+
 			List<OptionEntity> options = Stream.of(mock(OptionEntity.class)).collect(Collectors.toList());
 
 			when(optionRepository.findAllByVoteId(voteId)).thenReturn(options);
 
+			when(voteRepository.findById(voteId)).thenReturn(Optional.of(mock(VoteEntity.class)));
+
 			when(decisionRepository.existsByUserIdAndOptionId(anyLong(), anyLong())).thenReturn(true);
 
-			when(getUserNameService.execute(userId)).thenThrow(NotFoundUserException.class);
+			when(commentRepository.save(any())).thenReturn(commentEntity);
 
+			when(getUserNameService.execute(commentEntity)).thenThrow(NotFoundUserException.class);
 			// when & then
 			assertThrows(
 					NotFoundUserException.class,
