@@ -17,10 +17,11 @@ public class UpdateUserPasswordService {
 	private final UserRepository userRepository;
 
 	private final Encoder encoder;
+
 	public void execute(UpdateUserPasswordRequest requestDto, Long userId) {
 		UserEntity userEntity = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
 		String newPassword = requestDto.getNewPassword();
-		//비밀번호 유효성?
+		// 비밀번호 유효성?
 		userEntity.updatePassword(encoder.encode(newPassword));
 	}
 }
