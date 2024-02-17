@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.kakao.golajuma.vote.domain.exception.vote.NotWriterException;
 import com.kakao.golajuma.vote.persistence.entity.VoteEntity;
+import com.kakao.golajuma.vote.persistence.repository.OptionRepository;
 import com.kakao.golajuma.vote.persistence.repository.VoteRepository;
 import com.kakao.golajuma.vote.web.dto.request.AddOptionRequest;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class AddOptionServiceTest {
 	@InjectMocks private AddOptionService addOptionService;
 	@Mock VoteRepository voteRepository;
+	@Mock OptionRepository optionRepository;
 
 	@DisplayName("투표 옵션 추가")
 	@Test
